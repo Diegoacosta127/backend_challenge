@@ -1,0 +1,5 @@
+{
+    "dataworkspace.excludedProjects": [
+        "Willlin_Login/Willlin_Login.sqlproj"
+    ]
+}

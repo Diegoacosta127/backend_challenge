@@ -1,0 +1,34 @@
+networks:
+  willinn:
+
+services:
+  willinn-db:
+    container_name: willinn-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PassWord123!
+    ports:
+      - "8002:1433"
+    networks:
+      - willinn
+    #volumes:
+    #  - sqlvolume:/var/opt/mssql
+  
+  willinn-backend-api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    container_name: willinn-unknown-api
+    ports:
+      - "5000:80"
+    depends_on:
+      - willinn-db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=localhost,1433;User Id=sa;Password=PassWord123!;Initial Catalog=WillinnDB;TrustServerCertificate=True;"
+    networks:
+      - willinn
+
+volumes:
+  sqlvolume:
